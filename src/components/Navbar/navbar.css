@@ -1,0 +1,28 @@
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 1.3em;
+    padding:1em;
+    position: sticky;
+}
+
+.navigation {
+    list-style: none;
+    display: flex;
+    justify-content: space-around;
+    gap: 1.5em;
+}
+
+.navigation a {
+    text-decoration: none;
+    color: black;
+}
+
+.navigation li {
+    transition-duration: .3s;
+}
+
+.navigation li:hover {
+    transform: scale(1.2);
+}
