@@ -1,0 +1,18 @@
+[
+    {
+    "name": "Zapatilla roja",
+    "stock": 20
+    },
+    {
+    "name": "Zapatilla negra",
+    "stock": 15
+    },
+    {
+    "name": "Cortaviento morado",
+    "stock": 9
+    },
+    {
+    "name": "Parka verde",
+    "stock": 5
+    }
+]

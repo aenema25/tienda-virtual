@@ -1,32 +1,27 @@
+import { useEffect, useState } from 'react'
 import ItemCount from '../ItemCount'
 import './itemlistcontainer.css'
 
-const productos = [
-    {
-        name: 'Zapatilla roja',
-        stock: 20
-    },
-    {
-        name: 'Zapatilla negra',
-        stock: 15
-    },
-    {
-        name: 'Cortaviento morado',
-        stock: 9
-    },
-    {
-        name: 'Parka verde',
-        stock: 5
-    }
-]
-
 const ItemListContainer = ({ greetings }) => {
+    const [productos, setProductos] = useState()
+
+    const fetchProductos = async () => {
+        const req = await fetch('http://localhost:3000/productos.json')
+        const result = await req.json()
+        if (result) {
+            setProductos(result)
+        }
+    }
+
+    useEffect(() => {
+        fetchProductos()
+    }, [])
     return (
         <div className='container'>
             {greetings}
             <div className='productosContainer'>
                 {
-                    productos.map(producto => (
+                    productos && productos.map(producto => (
                         <ItemCount producto={producto} initialStock={producto.stock} initial={0} />
                     ))
                 }
