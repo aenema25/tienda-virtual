@@ -1,7 +1,7 @@
 import { useState } from "react"
-import './itemcount.css'
+import './itemdetail.css'
 
-const ItemCount = ({ producto, initialStock, initial }) => {
+const ItemDetail = ({ producto, initialStock, initial }) => {
     const [cantidad, setCantidad] = useState(initial)
     const [empty, setEmpty] = useState(false)
     const [stock, setStock] = useState(initialStock)
@@ -31,6 +31,12 @@ const ItemCount = ({ producto, initialStock, initial }) => {
             <div className="productoCardTitle">
                 {producto.name}
             </div>
+            <div className="productoImage">
+                <img src={`http://localhost:3000/imagenes/${producto.imgKey}`} />
+            </div>
+            <div className="productoDescription">
+                {producto.description}
+            </div>
             <div className="productoStock">
                 <button className="stockButtonLeft" onClick={restDown}>-</button>
                 <div className="cantidad">
@@ -46,4 +52,4 @@ const ItemCount = ({ producto, initialStock, initial }) => {
     )
 }
 
-export default ItemCount 
+export default ItemDetail

@@ -11,7 +11,25 @@
 
 .productoCardTitle {
     font-size: 2rem;
-    font-weight: 200;
+    font-weight: 500;
+}
+
+.productoImage {
+    max-width: 250px;
+    border-radius: 20px;
+    border: 1px solid rgba(107, 107, 107, 0.2);
+}
+
+.productoImage>img {
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+}
+
+.productoDescription {
+    font-weight: 300;
+    font-size: 18px;
+    text-align: justify;
 }
 
 .productoStock {
@@ -51,6 +69,7 @@
     padding: 0.5em;
 
 }
+
 .emptyStockMessage {
     font-size: 1rem;
     color: #EF233C;
