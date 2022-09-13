@@ -1,0 +1,8 @@
+.item-detail-container {
+    display: flex;
+    min-height: 90vh;
+    padding: 4em;
+    align-items: center;
+    justify-content: center;
+    gap: 4em;
+}

@@ -1,7 +1,8 @@
 import { useState } from "react"
+import { Link } from "react-router-dom"
 import './itemdetail.css'
 
-const ItemDetail = ({ producto, initialStock, initial }) => {
+const ItemDetail = ({ producto, initialStock, initial, more }) => {
     const [cantidad, setCantidad] = useState(initial)
     const [empty, setEmpty] = useState(false)
     const [stock, setStock] = useState(initialStock)
@@ -29,7 +30,10 @@ const ItemDetail = ({ producto, initialStock, initial }) => {
     return (
         <div className="productoCard">
             <div className="productoCardTitle">
-                {producto.name}
+                <span>{producto.name}</span>
+                {
+                    more ? <Link to={`/item/${producto.key}`}>Ver mas</Link> : <Link to={'/'}>Volver</Link> 
+                }
             </div>
             <div className="productoImage">
                 <img src={`http://localhost:3000/imagenes/${producto.imgKey}`} />
@@ -48,6 +52,7 @@ const ItemDetail = ({ producto, initialStock, initial }) => {
                 {empty && 'Se alcanzo la maxima cantidad de items para este producto'}
             </div>
             <button className="cartAddButton" onClick={updateStock}>Agregar al carrito</button>
+
         </div>
     )
 }

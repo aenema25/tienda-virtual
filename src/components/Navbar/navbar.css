@@ -5,8 +5,7 @@
     justify-content: space-between;
     font-size: 1.3em;
     padding: 1em;
-    position: sticky;
-    top: 0
+    top: 0;
 }
 
 .navigation {
@@ -28,4 +27,11 @@
 
 .navigation li:hover {
     transform: scale(1.2);
+}
+
+.logo {
+    text-decoration: none;
+    color: #EDF2F4;
+    font-size: 2em;
+    font-weight: 900;
 }

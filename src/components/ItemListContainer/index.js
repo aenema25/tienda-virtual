@@ -1,28 +1,17 @@
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import ItemDetail from '../ItemDetail'
 import './itemlistcontainer.css'
 
-const ItemListContainer = ({ greetings }) => {
-    const [productos, setProductos] = useState()
+const ItemListContainer = ({ greetings, productos }) => {
 
-    const fetchProductos = async () => {
-        const req = await fetch('http://localhost:3000/productos.json')
-        const result = await req.json()
-        if (result) {
-            setProductos(result)
-        }
-    }
-
-    useEffect(() => {
-        fetchProductos()
-    }, [])
     return (
         <div className='container'>
             {greetings}
             <div className='productosContainer'>
                 {
                     productos && productos.map(producto => (
-                        <ItemDetail producto={producto} initialStock={producto.stock} initial={0} />
+                        <ItemDetail producto={producto} initialStock={producto.stock} initial={0} more={true} />
                     ))
                 }
             </div>
