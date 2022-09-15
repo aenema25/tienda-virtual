@@ -30,7 +30,9 @@ const Navbar = () => (
                 </a>
             </li>
             <li>
-                <CartWidget cantidad={8} />
+                <Link to='/cart'>
+                    <CartWidget cantidad={8} />
+                </Link>
             </li>
         </ul>
     </nav>

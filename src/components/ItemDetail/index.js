@@ -32,7 +32,7 @@ const ItemDetail = ({ producto, initialStock, initial, more }) => {
             <div className="productoCardTitle">
                 <span>{producto.name}</span>
                 {
-                    more ? <Link to={`/item/${producto.key}`}>Ver mas</Link> : <Link to={'/'}>Volver</Link> 
+                    more ? <Link to={`/item/${producto.key}`}>Ver mas</Link> : <Link to={'/'}>Volver</Link>
                 }
             </div>
             <div className="productoImage">
@@ -41,7 +41,11 @@ const ItemDetail = ({ producto, initialStock, initial, more }) => {
             <div className="productoDescription">
                 {producto.description}
             </div>
+            <div className="productoStockDisponible">
+                Stock disponible: {stock}
+            </div>
             <div className="productoStock">
+
                 <button className="stockButtonLeft" onClick={restDown}>-</button>
                 <div className="cantidad">
                     {cantidad}
@@ -51,7 +55,12 @@ const ItemDetail = ({ producto, initialStock, initial, more }) => {
             <div className="emptyStockMessage">
                 {empty && 'Se alcanzo la maxima cantidad de items para este producto'}
             </div>
-            <button className="cartAddButton" onClick={updateStock}>Agregar al carrito</button>
+            <div className="buttonsContainer">
+                <button className="cartAddButton" onClick={updateStock}>Agregar al carrito</button>
+                <button className="cartEndButton"><Link to="/cart" >Terminar Compra</Link></button>
+
+            </div>
+
 
         </div>
     )
