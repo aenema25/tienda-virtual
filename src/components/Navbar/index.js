@@ -1,41 +1,28 @@
 import { Link } from 'react-router-dom'
 import CartWidget from '../CartWidget'
+import BasicMenu from './Menu'
+import Logo from '../../assets/logo.svg'
 import './navbar.css'
+import { Container } from '@mui/material'
 
 const Navbar = () => (
-    <nav className='navbar'>
-        <div>
-            <Link to={'/'} className="logo">
-                Tienda Virtual
-            </Link>
-        </div>
-        <ul className='navigation'>
-            <li>
-                <Link to={'/'}>
-                    Inicio
+    <Container>
+        <nav className='navbar'>
+            <div>
+                <BasicMenu />
+            </div>
+            <div>
+                <Link to={'/'} >
+                    <img src={Logo} className="logo"/>
                 </Link>
-            </li>
-            <li>
-                <Link to='/category/hombre'>Hombre</Link>
-            </li>
-            <li>
-                <Link to='/category/mujer'>Mujer</Link>
-            </li>
-            <li>
-                <Link to='/category/nino'>Niños</Link>
-            </li>
-            <li>
-                <a href='#'>
-                    Contacto
-                </a>
-            </li>
-            <li>
+            </div>
+            <div>
                 <Link to='/cart'>
                     <CartWidget cantidad={8} />
                 </Link>
-            </li>
-        </ul>
-    </nav>
+            </div>
+        </nav>
+    </Container>
 )
 
 
