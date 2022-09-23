@@ -9,6 +9,7 @@ import {
 } from '@mui/material/styles';
 import Product from './pages/Product';
 import Category from './pages/Category';
+import { CartContextProvider } from './components/context/CartContext';
 
 const theme = createTheme({
   typography: {
@@ -17,17 +18,19 @@ const theme = createTheme({
 });
 
 const App = () => (
-  <ThemeProvider theme={responsiveFontSizes(theme)}>
-    <div className="App">
-      <Navbar />
-      <Routes>
-        <Route path='/' element={<Home />} />
-        <Route path='/item/:id' element={<Product />} />
-        <Route path='/category/:id' element={<Category />} />
-        <Route path='/cart' element={<div>En construccion</div>} />
-      </Routes>
-    </div>
-  </ThemeProvider>
+  <CartContextProvider>
+    <ThemeProvider theme={responsiveFontSizes(theme)}>
+      <div className="App">
+        <Navbar />
+        <Routes>
+          <Route path='/' element={<Home />} />
+          <Route path='/item/:id' element={<Product />} />
+          <Route path='/category/:id' element={<Category />} />
+          <Route path='/cart' element={<div>En construccion</div>} />
+        </Routes>
+      </div>
+    </ThemeProvider>
+  </CartContextProvider>
 )
 
 export default App;

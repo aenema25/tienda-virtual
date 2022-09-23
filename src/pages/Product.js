@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { Link, useParams } from "react-router-dom"
 import { Button, Container, Grid, IconButton, Typography, Alert } from "@mui/material"
 import { Add, HorizontalRule } from "@mui/icons-material"
 import "./product.css"
+import { CartContext } from "../components/context/CartContext"
 
 const Product = () => {
     const [productDetail, setProductDetail] = useState()
@@ -10,6 +11,10 @@ const Product = () => {
     const [adddedQuantity, setAddedQuantity] = useState(0)
     const [emptyStock, setEmptyStock] = useState(false)
     const [empty, setEmpty] = useState(false)
+
+    const { id } = useParams()
+
+
 
     const addUp = () => {
         if (adddedQuantity < currentStock) {
@@ -33,16 +38,37 @@ const Product = () => {
         }
     }
 
-    const { id } = useParams()
+    const { isInCart, cart, setCart } = useContext(CartContext)
 
-    const fetchProductDetail = async () => {
-        const req = await fetch(`https://api.mercadolibre.com/items?ids=${id}`)
-        const res = await req.json()
-        setProductDetail(res[0].body)
-        setCurrentStock(res[0].body.available_quantity)
+    const addToCart = () => {
+        updateStock()
+        if (!emptyStock) {
+            const item = {
+                name: productDetail.title,
+                price: productDetail.price
+            }
+            const check = isInCart(item)
+            if (check) {
+                const index = cart.findIndex(product => product.name === item.name)
+                cart[index].quantity += adddedQuantity
+            } else {
+                const addeditem = {
+                    name: item.name,
+                    price: item.price,
+                    quantity: adddedQuantity
+                }
+                setCart([...cart, addeditem])
+            }
+        }
     }
 
     useEffect(() => {
+        const fetchProductDetail = async () => {
+            const req = await fetch(`https://api.mercadolibre.com/items?ids=${id}`)
+            const res = await req.json()
+            setProductDetail(res[0].body)
+            setCurrentStock(res[0].body.available_quantity)
+        }
         fetchProductDetail()
     }, [id])
 
@@ -50,7 +76,6 @@ const Product = () => {
         <Container>
             {
                 productDetail &&
-
                 <Grid container spacing={5} pt={10} alignItems='center' justifyContent="center" sx={{ position: "relative" }}>
                     <div className="back-button">
                         <Link to="/">
@@ -60,13 +85,13 @@ const Product = () => {
                         </Link>
                     </div>
                     <Grid item xs={4}>
-                        <img src={productDetail.pictures[0].secure_url} style={{ maxHeight: "250px", width:"100%" }} />
+                        <img alt="imageproduct1" src={productDetail.pictures[0].secure_url} style={{ maxHeight: "250px", width: "100%" }} />
                     </Grid>
                     <Grid item xs={4}>
-                        <img src={productDetail.pictures[1].secure_url} style={{ maxHeight: "250px", width:"100%" }} />
+                        <img alt="imageproduct2" src={productDetail.pictures[1].secure_url} style={{ maxHeight: "250px", width: "100%" }} />
                     </Grid>
                     <Grid item xs={4}>
-                        <img src={productDetail.pictures[2].secure_url} style={{ maxHeight: "250px", width:"100%" }} />
+                        <img alt="imageproduct3" src={productDetail.pictures[2].secure_url} style={{ maxHeight: "250px", width: "100%" }} />
                     </Grid>
                     <Grid item xs={12}>
                         {
@@ -108,11 +133,10 @@ const Product = () => {
                         </Button>
                     </Grid>
                     <Grid item xs={6} p={5} >
-                        <Button variant="contained" color="info" onClick={updateStock}>
+                        <Button variant="contained" color="info" onClick={addToCart}>
                             Agregar al carrito
                         </Button>
                     </Grid>
-
                 </Grid>
             }
         </Container >
