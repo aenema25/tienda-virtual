@@ -1,5 +1,4 @@
 import { Box, Button, Grid, Typography } from "@mui/material"
-import { useState } from "react"
 import { Link } from "react-router-dom"
 import './itemdetail.css'
 
@@ -12,7 +11,7 @@ const ItemCard = ({ product }) => {
             <Grid container spacing={2} alignItems="center" justifyContent={"space-between"} sx={{ minHeight: "450px" }}>
                 <Grid item xs={12}>
                     <Box className="product-image" sx={{ backgroundColor: colors[Math.floor(Math.random() * colors.length)] }}>
-                        <img src={`https://http2.mlstatic.com/D_NQ_NP_${product.thumbnail_id}-O.webp`} width={'100%'} />
+                        <img alt="product" src={`https://http2.mlstatic.com/D_NQ_NP_${product.thumbnail_id}-O.webp`} width={'100%'} />
                     </Box>
                 </Grid>
                 <Grid item xs={12}>

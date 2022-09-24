@@ -9,13 +9,12 @@ const Category = () => {
 
     const { id } = useParams()
 
-    const fetchProducts = async () => {
-        const req = await fetch(`https://api.mercadolibre.com/sites/MLC/search?q=zapatillas%20nike%20${id}&official_store=all&limit=20`)
-        const result = await req.json()
-        setProducts(result.results)
-    }
-
     useEffect(() => {
+        const fetchProducts = async () => {
+            const req = await fetch(`https://api.mercadolibre.com/sites/MLC/search?q=zapatillas%20nike%20${id}&official_store=all&limit=20`)
+            const result = await req.json()
+            setProducts(result.results)
+        }
         fetchProducts()
     }, [id])
     return (
