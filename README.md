@@ -2,6 +2,10 @@
 
 Tienda virtual creada para el curso de reactjs de "Coder house".
 
+## Version en vivo
+
+[Netlify - Tienda virtual](https://tienda-virtual-proyecto.netlify.app/)
+
 ## Información
 
 Tienda virtual ficticia creada para el curso de react de coder house aplicando las tecnologias y metodos solicitados en las consignas semanales
