@@ -10,11 +10,23 @@ import {
 import Product from './pages/Product';
 import Category from './pages/Category';
 import { CartContextProvider } from './components/context/CartContext';
+import Cart from './pages/Cart';
 
 const theme = createTheme({
   typography: {
     fontFamily: 'Poppins'
-  }
+  },
+  components: {
+    MuiContainer: {
+      styleOverrides: {
+        maxWidthLg: {
+          '&.MuiContainer-maxWidthLg': {
+            maxWidth: 1500,
+          },
+        },
+      },
+    },
+  },
 });
 
 const App = () => (
@@ -26,7 +38,7 @@ const App = () => (
           <Route path='/' element={<Home />} />
           <Route path='/item/:id' element={<Product />} />
           <Route path='/category/:id' element={<Category />} />
-          <Route path='/cart' element={<div>En construccion</div>} />
+          <Route path='/cart' element={<Cart />} />
         </Routes>
       </div>
     </ThemeProvider>

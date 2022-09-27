@@ -45,7 +45,9 @@ const Product = () => {
         if (!emptyStock) {
             const item = {
                 name: productDetail.title,
-                price: productDetail.price
+                price: productDetail.price,
+                img: productDetail.pictures[0].secure_url,
+                id: productDetail.id
             }
             const check = isInCart(item)
             if (check) {
@@ -53,9 +55,8 @@ const Product = () => {
                 cart[index].quantity += adddedQuantity
             } else {
                 const addeditem = {
-                    name: item.name,
-                    price: item.price,
-                    quantity: adddedQuantity
+                    ...item,
+                    quantity: adddedQuantity,
                 }
                 setCart([...cart, addeditem])
             }
@@ -67,10 +68,14 @@ const Product = () => {
             const req = await fetch(`https://api.mercadolibre.com/items?ids=${id}`)
             const res = await req.json()
             setProductDetail(res[0].body)
-            setCurrentStock(res[0].body.available_quantity)
+            
+            // Verificar cuantos items del producto actual estan en el carrito y quitarlos del stock
+            const currentItem = cart.find(product => product.id === id)
+            const quantityAddedToCart = currentItem ? currentItem.quantity : 0
+            setCurrentStock(res[0].body.available_quantity - quantityAddedToCart )
         }
         fetchProductDetail()
-    }, [id])
+    }, [id,cart])
 
     return (
         <Container>
