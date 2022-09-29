@@ -12,7 +12,7 @@ const Navbar = () => {
     const { cart } = useContext(CartContext)
 
     useEffect(() => {
-        setCartSize(cart.length)
+        setCartSize(cart.reduce((pv ,product ) => pv + product.quantity, 0))
     }, [cart])
 
     return (
@@ -26,7 +26,7 @@ const Navbar = () => {
                         <img src={Logo} alt="logo" className="logo" />
                     </Link>
                 </div>
-                <div>
+                <div style={{visibility: cartSize > 0 ? "visible" : "hidden"}}>
                     <Link to='/cart'>
                         <CartWidget cantidad={cartSize} />
                     </Link>

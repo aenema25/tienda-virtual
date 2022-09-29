@@ -42,6 +42,7 @@ const Product = () => {
 
     const addToCart = () => {
         updateStock()
+        setAddedQuantity(0)
         if (!emptyStock) {
             const item = {
                 name: productDetail.title,
@@ -53,6 +54,7 @@ const Product = () => {
             if (check) {
                 const index = cart.findIndex(product => product.name === item.name)
                 cart[index].quantity += adddedQuantity
+                setCart([...cart])
             } else {
                 const addeditem = {
                     ...item,
