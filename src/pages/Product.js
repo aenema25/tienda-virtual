@@ -4,6 +4,9 @@ import { Button, Container, Grid, IconButton, Typography, Alert } from "@mui/mat
 import { Add, HorizontalRule } from "@mui/icons-material"
 import "./product.css"
 import { CartContext } from "../components/context/CartContext"
+import db from "../firebase/connection"
+import { doc, getDoc } from "firebase/firestore";
+
 
 const Product = () => {
     const [productDetail, setProductDetail] = useState()
@@ -13,8 +16,6 @@ const Product = () => {
     const [empty, setEmpty] = useState(false)
 
     const { id } = useParams()
-
-
 
     const addUp = () => {
         if (adddedQuantity < currentStock) {
@@ -47,7 +48,7 @@ const Product = () => {
             const item = {
                 name: productDetail.title,
                 price: productDetail.price,
-                img: productDetail.pictures[0].secure_url,
+                img: productDetail.pictures[1],
                 id: productDetail.id
             }
             const check = isInCart(item)
@@ -67,16 +68,18 @@ const Product = () => {
 
     useEffect(() => {
         const fetchProductDetail = async () => {
-            const req = await fetch(`https://api.mercadolibre.com/items?ids=${id}`)
-            const res = await req.json()
-            setProductDetail(res[0].body)
-            
+            const productRef = doc(db, "productos", id);
+            const productResult = await getDoc(productRef);
+
+            setProductDetail({ id: id, ...productResult.data() })
             // Verificar cuantos items del producto actual estan en el carrito y quitarlos del stock
             const currentItem = cart.find(product => product.id === id)
+
             const quantityAddedToCart = currentItem ? currentItem.quantity : 0
-            setCurrentStock(res[0].body.available_quantity - quantityAddedToCart )
+            setCurrentStock(productResult.data().available_quantity - quantityAddedToCart)
         }
         fetchProductDetail()
+
     }, [id,cart])
 
     return (
@@ -92,13 +95,13 @@ const Product = () => {
                         </Link>
                     </div>
                     <Grid item xs={4}>
-                        <img alt="imageproduct1" src={productDetail.pictures[0].secure_url} style={{ maxHeight: "250px", width: "100%" }} />
+                        <img alt="imageproduct1" src={productDetail.pictures[1]} style={{ maxHeight: "250px", width: "100%" }} />
                     </Grid>
                     <Grid item xs={4}>
-                        <img alt="imageproduct2" src={productDetail.pictures[1].secure_url} style={{ maxHeight: "250px", width: "100%" }} />
+                        <img alt="imageproduct2" src={productDetail.pictures[2]} style={{ maxHeight: "250px", width: "100%" }} />
                     </Grid>
                     <Grid item xs={4}>
-                        <img alt="imageproduct3" src={productDetail.pictures[2].secure_url} style={{ maxHeight: "250px", width: "100%" }} />
+                        <img alt="imageproduct3" src={productDetail.pictures[3]} style={{ maxHeight: "250px", width: "100%" }} />
                     </Grid>
                     <Grid item xs={12}>
                         {
@@ -117,7 +120,7 @@ const Product = () => {
                         <Typography variant="h6" fontWeight={500} sx={{ color: "#e63946" }}>
                             ${productDetail.price}
                         </Typography>
-                        {productDetail.original_price && <Typography>${productDetail.original_price}</Typography>}
+                        {productDetail.original_price && <Typography variant={"body2"} fontWeight={600} sx={{ textDecoration: "line-through" }}>${productDetail.original_price}</Typography>}
                         <Typography>
                             Stock disponible: {currentStock} {currentStock > 1 ? 'Unidades' : 'Unidad'}
                         </Typography>

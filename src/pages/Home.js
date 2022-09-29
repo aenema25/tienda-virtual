@@ -2,18 +2,27 @@ import ProductsContainer from "../components/ProductsContainer"
 import { Container, Grid } from "@mui/material"
 import { useEffect, useState } from "react"
 import Example from "../components/Carousel"
+import { collection, getDocs } from "firebase/firestore";
+import db from "../firebase/connection"
 
 const Home = () => {
-    const [products, setProducts] = useState()
-
-    const fetchProducts = async () => {
-        const req = await fetch("https://api.mercadolibre.com/sites/MLC/search?q=zapatillas%20nike&official_store=all&limit=20")
-        const result = await req.json()
-        setProducts(result.results)
-    }
+    const [products, setProducts] = useState([])
 
     useEffect(() => {
+        const fetchProducts =  () => {
+            const productsRef = collection(db, "productos");
+            getDocs(productsRef).then((queryProducts) => {
+                const productsResult = []
+                queryProducts.forEach((doc) => {
+                    const data = doc.data()
+                    const product = ({ id: doc.id, ...data })
+                    productsResult.push(product)
+                });
+                setProducts(productsResult)
+            })
+        }
         fetchProducts()
+
     }, [])
     return (
         <Container>
