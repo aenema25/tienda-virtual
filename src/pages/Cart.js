@@ -1,12 +1,39 @@
 import { Delete } from "@mui/icons-material"
-import { Box, Typography, Container, Button, Grid, Paper, IconButton } from "@mui/material"
-import { useContext} from "react"
+import { Box, Typography, Container, Button, Grid, Paper, IconButton, TextField } from "@mui/material"
+import { useContext, useState } from "react"
 import { Link } from "react-router-dom"
 import { CartContext } from "../components/context/CartContext"
 import "./cart.css"
+import { collection, addDoc } from "firebase/firestore";
+import db from "../firebase/connection"
 
 const Cart = () => {
     const { cart, deleteProduct } = useContext(CartContext)
+    const [name, setName] = useState()
+    const [phone, setPhone] = useState()
+    const [email, setEmail] = useState()
+    const total = cart.reduce((previousvalue, product) => previousvalue + (product.quantity * product.price), 0)
+
+    const makeOrder = () => {
+        const parsedItems = cart.map(product => { return { id: product.id, title: product.name, price: product.price, qty: product.quantity } })
+        const payload = {
+            buyer: {
+                name: name,
+                phone: phone,
+                email: email,
+            },
+            item: [...parsedItems],
+            date: new Date().toISOString(),
+            total: total
+        }
+        addDoc(collection(db, "ordenes"), payload).then((response) => {
+            if(!response._key.path.segments.some(element => element === undefined)){
+                alert("Compra realizada con exito")
+
+            }
+        })
+    }
+
 
     return (
 
@@ -58,7 +85,7 @@ const Cart = () => {
                     }
                     {
                         cart.length === 0 &&
-                        <Box p={5} sx={{display:"flex", flexDirection: "column", justifyContent:"center", alignItems:"center", gap:"10px"}}>
+                        <Box p={5} sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: "10px" }}>
                             <Typography variant="h4" fontWeight={700}>
                                 Carro vacio :(
                             </Typography>
@@ -72,7 +99,7 @@ const Cart = () => {
                     }
                 </Grid>
                 <Grid item xs={3}>
-                    <Paper sx={{ height: "100%", display: "flex", flexDirection: "column", justifyContent: "space-around" }}>
+                    <Paper sx={{ padding: 2, height: "100%", display: "flex", flexDirection: "column", justifyContent: "space-around" }}>
                         <Typography variant="h6" fontWeight={700}>
                             Resumen de tu compra
                         </Typography>
@@ -81,19 +108,49 @@ const Cart = () => {
                                 Total
                             </Typography>
                             <Typography>
-                                ${cart.reduce((previousvalue, product) => previousvalue + (product.quantity * product.price), 0)}
+                                ${total}
                             </Typography>
                         </Box>
-                        <Box sx={{ display: "flex", justifyContent: "space-evenly", alignItems: "center" }}>
-                            <Link to="/">
-                                <Button variant="contained" color="error">
-                                    Volver
+                        <Grid container spacing={2}>
+                            <Grid item xs={12}>
+                                <Typography>
+                                    Nombre
+                                </Typography>
+
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField type="text" value={name} onChange={(e) => setName(e.target.value)} />
+
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Typography>
+                                    Telefono
+                                </Typography>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Typography>
+                                    Correo
+                                </Typography>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                            </Grid>
+                            <Grid item xs={6}>
+                                <Link to="/">
+                                    <Button variant="contained" color="error">
+                                        Volver
+                                    </Button>
+                                </Link>
+                            </Grid>
+                            <Grid item xs={6}>
+                                <Button disabled={!name || !phone || !email} variant="contained" color="primary" onClick={makeOrder}>
+                                    Ir a pagar
                                 </Button>
-                            </Link>
-                            <Button variant="contained" color="primary">
-                                Ir a pagar
-                            </Button>
-                        </Box>
+                            </Grid>
+                        </Grid>
                     </Paper>
                 </Grid>
             </Grid>
