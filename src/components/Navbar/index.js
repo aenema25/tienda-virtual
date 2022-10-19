@@ -5,7 +5,7 @@ import Logo from '../../assets/logo.svg'
 import './navbar.css'
 import { Container } from '@mui/material'
 import { useContext, useEffect, useState } from 'react'
-import { CartContext } from '../context/CartContext'
+import { CartContext } from '../../context/CartContext'
 
 const Navbar = () => {
     const [cartSize, setCartSize] = useState()

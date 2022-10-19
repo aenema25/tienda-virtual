@@ -9,7 +9,7 @@ import {
 } from '@mui/material/styles';
 import Product from './pages/Product';
 import Category from './pages/Category';
-import { CartContextProvider } from './components/context/CartContext';
+import { CartContextProvider } from './context/CartContext';
 import Cart from './pages/Cart';
 
 const theme = createTheme({

@@ -1,7 +1,7 @@
 import ProductsContainer from "../components/ProductsContainer"
 import { Container, Grid } from "@mui/material"
 import { useEffect, useState } from "react"
-import Example from "../components/Carousel"
+import Carousel from "../components/Carousel"
 import { collection, getDocs } from "firebase/firestore";
 import db from "../firebase/connection"
 
@@ -23,12 +23,13 @@ const Home = () => {
         }
         fetchProducts()
 
+
     }, [])
     return (
         <Container>
             <Grid container spacing={3} >
                 <Grid item xs={12}>
-                    <Example />
+                    <Carousel />
                 </Grid>
                 <Grid item xs={12}>
                     {

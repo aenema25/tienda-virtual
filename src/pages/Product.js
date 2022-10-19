@@ -3,7 +3,7 @@ import { Link, useParams } from "react-router-dom"
 import { Button, Container, Grid, IconButton, Typography, Alert } from "@mui/material"
 import { Add, HorizontalRule } from "@mui/icons-material"
 import "./product.css"
-import { CartContext } from "../components/context/CartContext"
+import { CartContext } from "../context/CartContext"
 import db from "../firebase/connection"
 import { doc, getDoc } from "firebase/firestore";
 
@@ -64,6 +64,7 @@ const Product = () => {
                 setCart([...cart, addeditem])
             }
         }
+        alert("Producto agregado al carrito exitosamente")
     }
 
     useEffect(() => {
@@ -94,13 +95,13 @@ const Product = () => {
                             </Button>
                         </Link>
                     </div>
-                    <Grid item xs={4}>
+                    <Grid item xs={12} sm={6} md={4}>
                         <img alt="imageproduct1" src={productDetail.pictures[1]} style={{ maxHeight: "250px", width: "100%" }} />
                     </Grid>
-                    <Grid item xs={4}>
+                    <Grid item xs={6} sm={6} md={4}>
                         <img alt="imageproduct2" src={productDetail.pictures[2]} style={{ maxHeight: "250px", width: "100%" }} />
                     </Grid>
-                    <Grid item xs={4}>
+                    <Grid item xs={6} sm={12} md={4}>
                         <img alt="imageproduct3" src={productDetail.pictures[3]} style={{ maxHeight: "250px", width: "100%" }} />
                     </Grid>
                     <Grid item xs={12}>
@@ -137,12 +138,12 @@ const Product = () => {
                             <Add sx={{ color: "#264653" }} />
                         </IconButton>
                     </Grid>
-                    <Grid item xs={6} p={5}>
+                    <Grid item xs={6} p={2}>
                         <Button variant="contained" sx={{ bgcolor: "#e63946" }}>
                             Comprar ahora
                         </Button>
                     </Grid>
-                    <Grid item xs={6} p={5} >
+                    <Grid item xs={6} p={2} >
                         <Button variant="contained" color="info" onClick={addToCart}>
                             Agregar al carrito
                         </Button>

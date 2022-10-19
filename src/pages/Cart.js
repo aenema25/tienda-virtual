@@ -2,19 +2,19 @@ import { Delete } from "@mui/icons-material"
 import { Box, Typography, Container, Button, Grid, Paper, IconButton, TextField } from "@mui/material"
 import { useContext, useState } from "react"
 import { Link } from "react-router-dom"
-import { CartContext } from "../components/context/CartContext"
+import { CartContext } from "../context/CartContext"
 import "./cart.css"
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, writeBatch, doc, getDoc } from "firebase/firestore";
 import db from "../firebase/connection"
 
 const Cart = () => {
-    const { cart, deleteProduct } = useContext(CartContext)
+    const { cart, deleteProduct, setCart } = useContext(CartContext)
     const [name, setName] = useState()
     const [phone, setPhone] = useState()
     const [email, setEmail] = useState()
     const total = cart.reduce((previousvalue, product) => previousvalue + (product.quantity * product.price), 0)
 
-    const makeOrder = () => {
+    const makeOrder = async () => {
         const parsedItems = cart.map(product => { return { id: product.id, title: product.name, price: product.price, qty: product.quantity } })
         const payload = {
             buyer: {
@@ -26,12 +26,29 @@ const Cart = () => {
             date: new Date().toISOString(),
             total: total
         }
-        addDoc(collection(db, "ordenes"), payload).then((response) => {
-            if(!response._key.path.segments.some(element => element === undefined)){
-                alert("Compra realizada con exito")
+        // crear orden de compra en firebase
+        const createdOrder = await addDoc(collection(db, "ordenes"), payload)
+        if (createdOrder.id) {
+            alert("Compra realizada con exito !")
+        } else {
+            alert("Ocurrio un error inesperado, intenta nuevamente")
+        }
 
+        // actualizar stock en firebase
+        const batch = writeBatch(db)
+        for (const product of parsedItems) {
+            const ref = doc(db, "productos", product.id)
+            const docData = await getDoc(ref)
+            if (docData.data().available_quantity) {
+                batch.update(ref, {
+                    available_quantity: docData.data().available_quantity - product.qty
+                })
             }
-        })
+        }
+        batch.commit()
+        // Vaciar carro al terminar la compra 
+        setCart([])
+        
     }
 
 
@@ -44,7 +61,7 @@ const Cart = () => {
                         Carro de compra
                     </Typography>
                 </Grid>
-                <Grid item xs={9}>
+                <Grid item xs={12} md={9}>
                     {
                         cart.length > 0 &&
                         <Paper sx={{ paddingX: 5, paddingY: 2 }}>
@@ -98,7 +115,7 @@ const Cart = () => {
                         </Box>
                     }
                 </Grid>
-                <Grid item xs={3}>
+                <Grid item xs={12} md={3}>
                     <Paper sx={{ padding: 2, height: "100%", display: "flex", flexDirection: "column", justifyContent: "space-around" }}>
                         <Typography variant="h6" fontWeight={700}>
                             Resumen de tu compra

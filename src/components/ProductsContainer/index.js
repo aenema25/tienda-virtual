@@ -8,7 +8,7 @@ const ProductsContainer = ({ products }) => {
             <Grid container spacing={5} justifyContent="center" alignItems="stretch" >
                 {
                     products.map((product,index) => (
-                        <Grid item xs={3} key={index}>
+                        <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
                             <ItemCard product={product} />
                         </Grid>
                     ))
